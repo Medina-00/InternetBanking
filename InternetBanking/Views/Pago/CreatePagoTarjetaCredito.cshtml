@@ -1,0 +1,53 @@
+﻿@model InternetBanking.Core.Application.ViewModels.Pago.SavePagoViewModel
+
+@{
+    ViewData["Title"] = "CreatePagoTarjetaCredito";
+}
+
+<h1>CreatePagoTarjetaCredito</h1>
+
+<h4>SavePagoViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreatePagoTarjetaCredito">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Monto" class="control-label"></label>
+                <input required asp-for="Monto" class="form-control" />
+                <span asp-validation-for="Monto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <input asp-for="TipoPago" type="hidden" />
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="CuentaAhorroId" class="control-label"></label>
+                <select required asp-for="CuentaAhorroId" asp-items="@(new SelectList(Model.CuentasAhorro,"IdCuentaAhorro","NumeroCuenta"))" class="form-select">
+                    <option value="">Seleccione una Cuenta</option>
+                </select>
+
+                <span asp-validation-for="CuentaAhorroId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TarjetaCreditoId" class="control-label"></label>
+                <select required asp-for="TarjetaCreditoId" asp-items="@(new SelectList(Model.TarjetasCredito,"IdTarjetaCredito","NumeroTarjeta"))" class="form-select">
+                    <option value="">Seleccione una Tarjeta de credito</option>
+                </select>
+
+                <span asp-validation-for="TarjetaCreditoId" class="text-danger"></span>
+            </div>
+            
+            
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Producto" asp-action="Index">Back to List</a>
+</div>
+

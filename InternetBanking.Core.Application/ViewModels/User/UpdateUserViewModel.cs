@@ -24,14 +24,17 @@ namespace InternetBanking.Core.Application.ViewModels.User
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Debe colocar una contraseña")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Las contraseñas no coiciden")]
-        [Required(ErrorMessage = "Debe colocar una contraseña")]
+        
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        public double? MontoInicial { get; set; }
+
+        public string Rol { get; set; }
 
         public bool HasError { get; set; }
         public string? Error { get; set; }

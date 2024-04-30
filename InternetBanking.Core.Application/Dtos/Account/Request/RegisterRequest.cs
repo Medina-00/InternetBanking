@@ -12,5 +12,10 @@ namespace InternetBanking.Core.Application.Dtos.Account.Request
 
         public string Rol { get; set; }
 
+        public double? MontoInicial { get; set; }
+
+        public bool? Activo { get; set; }
+
+
     }
 }

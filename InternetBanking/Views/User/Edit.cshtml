@@ -1,0 +1,126 @@
+﻿@model InternetBanking.Core.Application.ViewModels.User.UpdateUserViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutSinNav.cshtml";
+
+}
+
+
+ <body class="bg-primary">
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Edit Account</h3></div>
+                                <div class="card-body">
+                                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                                    @if (Model.HasError)
+                                    {
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            <p>@Model.Error</p>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    }
+
+                                    <form asp-controller="User" asp-action="Edit" >
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                                        <div class="form-floating mb-3">
+                                            <input readonly class="form-control" asp-for="UserId"  />
+                                            <label asp-for="UserId">Email </label>
+                                            <span asp-validation-for="UserId" class="text-danger"></span>
+
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" asp-for="Nombre" placeholder="INGRESE SU NOMBRE" />
+                                                    <label asp-for="Nombre">Nombre </label>
+                                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+
+                                                </div>
+                                                <br />
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" asp-for="Apellido" placeholder="INGRESE SU APELLIDO" />
+                                                    <label asp-for="Apellido">Apellido</label>
+                                                    <span asp-validation-for="Apellido" class="text-danger"></span>
+
+                                                </div>
+                                                <br />
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input class="form-control" asp-for="UserName" placeholder="INGRESE SU NOMBRE DE USUARIO" />
+                                                    <label asp-for="UserName">Nombre de Usuario</label>
+                                                    <span asp-validation-for="UserName" class="text-danger"></span>
+
+                                                </div>
+                                                <br />
+                                            </div>
+
+                                            <input type="hidden" asp-for="Rol"  />
+
+                                            @if (Model.Rol == "Cliente")
+                                            {
+                                                <div class="col-md-6">
+                                                    <div class="form-floating">
+                                                        <label asp-for="MontoInicial"> Monto </label>
+                                                        <input asp-for="MontoInicial" class="form-control" />
+                                                        <span asp-validation-for="MontoInicial" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="form-floating mb-3">
+                                            <input class="form-control" asp-for="Email" placeholder="name@example.com" />
+                                            <label asp-for="Email">Email </label>
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                                        </div>
+                                        <br />
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" asp-for="Password" placeholder="INGRESE SU PASSWORD" />
+                                                    <label asp-for="Password">Password</label>
+                                                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="col-md-6">
+                                                <div class="form-floating mb-3 mb-md-0">
+                                                    <input class="form-control" asp-for="ConfirmPassword" placeholder="CONFIRME EL PASSWORD" />
+                                                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="mt-4 mb-0">
+                                            <div class="d-grid"><input class="btn btn-dark btn-block" value="Edit Account" type="submit" /></div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="card-footer text-center py-3">
+                                    <div class="small"><a asp-controller="User" asp-action="Index">Back to Index</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+</body>
+
+

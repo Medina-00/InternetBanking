@@ -3,7 +3,7 @@ using InternetBanking.Core.Application;
 using InternetBanking.Infrastructure.Identity.Entities;
 using InternetBanking.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Identity;
-
+using InternetBanking.Infrastructure.Persistence;
 internal class Program
 {
     private static async Task Main(string[] args)
@@ -15,6 +15,8 @@ internal class Program
         builder.Services.AddSession();
         builder.Services.AddIdentityInfrastructure(builder.Configuration);
         builder.Services.AddApplicationLayer(builder.Configuration);
+        builder.Services.AddPersistenceInfrastructure(builder.Configuration);
+
 
         var app = builder.Build();
         using (var scope = app.Services.CreateScope())
@@ -28,7 +30,8 @@ internal class Program
 
                 await DefaultRoles.SeedAsync(userManager, roleManager);
                 await DefaultSuperAdminUser.SeedAsync(userManager, roleManager);
-
+                await DefaultClienteUser.SeedAsync(userManager, roleManager);
+                await DefaultAdminUser.SeedAsync(userManager, roleManager);
 
             }
             catch (Exception ex) { Console.WriteLine(ex); }

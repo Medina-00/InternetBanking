@@ -12,5 +12,7 @@ namespace InternetBanking.Core.Application.Dtos.Account.Response
         public bool HasError { get; set; }
         public string? Error { get; set; }
 
+        public bool? Activo { get; set; }
+
     }
 }

@@ -1,0 +1,63 @@
+﻿@using InternetBanking.Core.Application.ViewModels.Beneficiario
+@using InternetBanking.Core.Application.ViewModels.User
+@model IEnumerable<InternetBanking.Core.Application.ViewModels.Beneficiario.BeneficiarioViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-dark"> Beneficiarios  </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Create" class="btn btn-dark">
+                <i class="bi bi-patch-plus"></i>&nbsp; Crear Beneficiario
+            </a>
+        </div>
+
+    </div>
+</div>
+<hr />
+<div class="container-fluid">
+
+
+
+    <div class="row">
+        @foreach (BeneficiarioViewModel item in Model)
+        {
+
+            foreach (UserViewModel user in ViewBag.Users)
+            {
+                @if(item.UserIdBeneficiario == user.UserId)
+                {
+                    <div class="col-4 mb-3">
+                        <div class="card shadow-sm">
+
+                            
+                                 <div class="card-body">
+                                    
+                                     <p class="card-text"><strong>Nombre </strong> @user.Nombre</p>
+                                    <p class="card-text"><strong>Apellido: </strong> @user.Apellido</p>
+                                    <p class="card-text"><strong>Numero de Cuenta: </strong> @item.NumeroCuenta</p>
+                                    
+
+
+                                     <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                        <a asp-action="Delete" asp-route-id="@item.IdBeneficiario" class="btn btn-sm btn-outline-dark">Borrar</a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                        </div>
+                    </div>
+                }
+            }
+            
+        }
+</div>

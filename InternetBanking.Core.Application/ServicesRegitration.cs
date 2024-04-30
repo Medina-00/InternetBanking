@@ -15,8 +15,19 @@ namespace InternetBanking.Core.Application
             #region Services
             
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IProductoService, ProductoService>();
+            services.AddTransient<ICuentaAhorroService, CuentaAhorroService>();
+            services.AddTransient<IPrestamoService, PrestamoService>();
+            services.AddTransient<ITarjetaCreditoService, TarjetaCreditoService>();
+            services.AddTransient<IBeneficiarioService, BeneficiarioService>();
+            services.AddTransient<IPagoService, PagoService>();
+            services.AddTransient<IAvenceEfectivoService, AvanceEfectivoService>();
+            services.AddTransient<ITransferenciaService, TransferenciaService>();
+
 
             #endregion
+
+
         }
 
     }

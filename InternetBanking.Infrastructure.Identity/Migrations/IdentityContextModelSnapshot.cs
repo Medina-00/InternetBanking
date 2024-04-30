@@ -31,6 +31,9 @@ namespace InternetBanking.Infrastructure.Identity.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("Activo")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Apellido")
                         .HasColumnType("nvarchar(max)");
 
@@ -50,6 +53,9 @@ namespace InternetBanking.Infrastructure.Identity.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<double?>("MontoInicial")
+                        .HasColumnType("float");
 
                     b.Property<string>("Nombre")
                         .HasColumnType("nvarchar(max)");

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using InternetBanking.Core.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace InternetBanking.Infrastructure.Identity.Entities
@@ -9,6 +10,15 @@ namespace InternetBanking.Infrastructure.Identity.Entities
 
         public string? Apellido { get; set; }
 
+        public double? MontoInicial { get; set; }
+
+        public bool? Activo { get; set; }
+
+
+
+        public List<Producto> Productos { get; set; }
+
+        public List<Beneficiario> Beneficiarios { get; set; }
 
 
 

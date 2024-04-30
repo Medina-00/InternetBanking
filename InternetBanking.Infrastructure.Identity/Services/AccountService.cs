@@ -3,9 +3,13 @@
 using InternetBanking.Core.Application.Dtos.Account.Request;
 using InternetBanking.Core.Application.Dtos.Account.Response;
 using InternetBanking.Core.Application.Enums;
+using InternetBanking.Core.Application.Interfaces.Repository;
 using InternetBanking.Core.Application.Interfaces.Services;
+using InternetBanking.Core.Application.ViewModels.User;
+using InternetBanking.Core.Domain.Entities;
 using InternetBanking.Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace InternetBanking.Infrastructure.Identity.Services
 {
@@ -13,11 +17,17 @@ namespace InternetBanking.Infrastructure.Identity.Services
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly IProducto productoRepository;
+        private readonly ICuentaAhorro cuentaAhorroRepository;
 
-        public AccountService(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AccountService(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager ,
+            IProducto productoRepository, ICuentaAhorro cuentaAhorroRepository)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.productoRepository = productoRepository;
+            this.cuentaAhorroRepository = cuentaAhorroRepository;
         }
 
         public async Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request)
@@ -46,7 +56,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
             response.UserName = user.UserName!;
 
             var rolesList = await userManager.GetRolesAsync(user).ConfigureAwait(false);
-
+            response.Activo = user.Activo;
             response.Roles = rolesList.ToList();
             response.IsVerified = user.EmailConfirmed;
 
@@ -88,6 +98,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 Email = request.Email,
                 UserName = request.UserName,
                 EmailConfirmed = true,
+                Activo = true
 
             };
 
@@ -102,6 +113,27 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 else if (request.Rol == "Cliente")
                 {
                     await userManager.AddToRoleAsync(user, Roles.Cliente.ToString());
+                    var UserCreado = await userManager.FindByNameAsync(request.UserName);
+
+                    if (UserCreado != null)
+                    {
+                        Producto producto = new Producto();
+
+                        producto.Tipo = TipoProducto.CuentaAhorro.ToString();
+                        producto.UserId = UserCreado.Id;
+                        
+
+                        await productoRepository.AddAsync(producto);
+                        var numeroP = await productoRepository.GetByIdAsync(producto.IDProducto);
+
+                        CuentaAhorro cuentaAhorro = new CuentaAhorro();
+
+                        cuentaAhorro.UserId = UserCreado.Id;
+                        cuentaAhorro.EsPrincipal = true;
+                        cuentaAhorro.Saldo = (decimal)request.MontoInicial!;
+                        cuentaAhorro.NumeroProducto = numeroP.Numero9Digitos.ToString();
+                        await cuentaAhorroRepository.AddAsync(cuentaAhorro);
+                    }
                 }
 
             }
@@ -119,31 +151,35 @@ namespace InternetBanking.Infrastructure.Identity.Services
             await signInManager.SignOutAsync();
         }
 
-        public async Task<UpdateResponse> GetByUserName(string Username)
+        public async Task<UpdateUserViewModel> GetByUserName(string UserId)
         {
-            UpdateResponse response = new();
-            var result = await userManager.FindByNameAsync(Username);
+            UpdateUserViewModel update = new();
+            var result = await userManager.FindByIdAsync(UserId);
 
             if (result == null)
             {
-                response.HasError = true;
-                response.Error = $"No se Encontro el usuario Con El Siguiente UserName - {Username}";
-                return response;
+                update.HasError = true;
+                update.Error = $"No se Encontro el usuario Con El Siguiente Id - {UserId}";
+                return update;
             }
 
-            response.UserId = result.Id;
-            response.Nombre = result.Nombre!;
-            response.Apellido = result.Apellido!;
-            response.UserName = result.UserName!;
-            response.Email = result.Email!;
+            update.UserId = result.Id;
+            update.Nombre = result.Nombre!;
+            update.Apellido = result.Apellido!;
+            update.UserName = result.UserName!;
+            update.Email = result.Email!;
 
-            return response;
+            var roles = await userManager.GetRolesAsync(result);
+            update.Rol = string.Join(",", roles);
+
+
+            return update;
         }
 
-        public async Task<UpdateResponse> EditUserAsync(string userName, UpdateRequest request)
+        public async Task<UpdateResponse> EditUserAsync(string UserId, UpdateRequest request)
         {
             UpdateResponse updateResponse = new();
-            var user = await userManager.FindByNameAsync(userName);
+            var user = await userManager.FindByIdAsync(UserId);
             if (user == null)
             {
                 updateResponse.HasError = true;
@@ -152,6 +188,7 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 return updateResponse;
             }
 
+            user.Id = request.UserId;
             user.Nombre = request.Nombre;
             user.Apellido = request.Apellido;
             user.UserName = request.UserName;
@@ -171,6 +208,19 @@ namespace InternetBanking.Infrastructure.Identity.Services
                 }
             }
 
+            var cuentaAhorro = await cuentaAhorroRepository.GetAllAsync();
+
+            var cuentaAhorroUser = cuentaAhorro.Where(c => c.UserId == user.Id).FirstOrDefault();
+            
+            if (cuentaAhorroUser == null)
+            {
+                updateResponse.HasError = true;
+                updateResponse.Error = $"LO SIENTO,NO SE ENCONTRO LA CUENTA DE AHORRO DEL ESTE USER!! ";
+            }
+
+            cuentaAhorroUser!.Saldo += (decimal)request.MontoInicial!;
+
+            await cuentaAhorroRepository.UpdateAsync(cuentaAhorroUser , cuentaAhorroUser.IdCuentaAhorro);
 
             var resultUpdate = await userManager.UpdateAsync(user);
             if (!resultUpdate.Succeeded)
@@ -184,8 +234,52 @@ namespace InternetBanking.Infrastructure.Identity.Services
             return updateResponse;
         }
 
+        public async Task<IEnumerable<UserViewModel>> GetAllUser()
+        {
+            var result = await userManager.Users.ToListAsync();
 
+            var Users = new List<UserViewModel>();
 
+            foreach (var user in result)
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                var userViewModel = new UserViewModel
+                {
+                    UserId = user.Id,
+                    Nombre = user.Nombre!,
+                    Apellido = user.Apellido!,
+                    UserName = user.UserName!,
+                    Email = user.Email!,
+                    Rol = string.Join(",", roles), // Concatenar los roles en una cadena separada por comas
+                    Activo = user.Activo!
+                };
 
+                Users.Add(userViewModel);
+            }
+
+            return Users;
+        }
+
+        public async Task Activar(string UserId, ActivarUser activarUser)
+        {
+
+            var user = await userManager.FindByIdAsync(UserId);
+
+            if(activarUser.Activo == "Activar")
+            {
+                user!.Activo = true;
+            }
+            else
+            {
+                user!.Activo = false;
+            }
+
+            
+           
+
+            await userManager.UpdateAsync(user);
+        }
+
+        
     }
 }

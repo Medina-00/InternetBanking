@@ -1,0 +1,71 @@
+﻿@using InternetBanking.Core.Application.ViewModels.User
+@model IEnumerable<InternetBanking.Core.Application.ViewModels.User.UserViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-dark"> Users </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a  asp-action="Create" class="btn btn-dark">
+                <i class="bi bi-patch-plus"></i>&nbsp; Create User
+            </a>
+        </div>
+
+    </div>
+</div>
+<hr />
+<div class="container-fluid">
+
+
+
+    <div class="row">
+        @foreach (UserViewModel item in Model)
+        {
+            <div class="col-4 mb-3">
+                <div class="card shadow-sm">
+                    
+
+                    <div class="card-body">
+                        <p class="card-text"><strong>Nombre Completo:</strong> @item.Nombre @item.Apellido</p>
+                        <p class="card-text"><strong>Cedula:</strong>@item.UserName</p>
+                        <p class="card-text"><strong>Email:</strong>@item.Email</p>
+                        <p class="card-text"><strong>Roles:</strong>@item.Rol</p>
+                        @if(item.Activo == true)
+                        {
+                            <p class="card-text"><strong>Estado:</strong>Activo</p>
+                        }
+                        else{
+                            <p class="card-text"><strong>Estado:</strong>Inactivo</p>
+                        }
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <a asp-action="Edit" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-dark">Editar</a>
+                                <a asp-action="Delete" asp-route-id="@item.UserId" class="btn btn-sm btn-outline-dark">Eliminar</a>
+
+                                @if (item.Activo == true)
+                                {
+                                    <a asp-controller="User" asp-action="Activar" asp-route-id="@item.UserId" asp-route-desicion="Inactivar" class="btn btn-sm btn-outline-dark">Inactivar</a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="User" asp-action="Activar" asp-route-id="@item.UserId" asp-route-desicion="Activar" class="btn btn-sm btn-outline-dark">Activar</a>
+
+                                }
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+<hr />

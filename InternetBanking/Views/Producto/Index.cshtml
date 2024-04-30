@@ -1,0 +1,150 @@
+﻿@using InternetBanking.Core.Application.ViewModels.CuentaAhorro
+@using InternetBanking.Core.Application.ViewModels.Prestamo
+@using InternetBanking.Core.Application.ViewModels.Producto
+@using InternetBanking.Core.Application.ViewModels.TarjetaCredito
+@model IEnumerable<InternetBanking.Core.Application.ViewModels.Producto.ProductoViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-dark"> Productos </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-action="Create" class="btn btn-dark">
+                <i class="bi bi-patch-plus"></i>&nbsp; Crear Producto
+            </a>
+        </div>
+
+    </div>
+</div>
+<hr />
+<div class="container-fluid">
+
+
+
+    <div class="row">
+        @foreach (ProductoViewModel item in Model)
+        {
+            if (item.Tipo == "CuentaAhorro")
+            {
+                foreach (CuentaAhorroViewModel cuenta in ViewBag.CuentaAhorro)
+                {
+                    @if(item.Numero9Digitos == cuenta.NumeroProducto)
+                    {
+                        
+                        <div class="col-4 mb-3">
+                            <div class="card shadow-sm">
+
+
+
+                                <div class="card-body">
+                                    @if (item.Tipo == "CuentaAhorro")
+                                    {
+                                        <p class="card-text"><strong>Tipo Producto: </strong> @item.Tipo</p>
+                                    }
+                                    <p class="card-text"><strong>Saldo: </strong> @cuenta.Saldo</p>
+                                    <p class="card-text"><strong>Numero de Cuenta: </strong> @cuenta.NumeroCuenta</p>
+                                    @if (cuenta.EsPrincipal == true)
+                                    {
+                                        <p class="card-text"><strong>Es Principal: </strong> SI</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="card-text"><strong>Es Principal: </strong> No</p>
+                                    }
+
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a asp-controller="CuentaAhorro" asp-action="Delete" asp-route-id="@cuenta.IdCuentaAhorro" class="btn btn-sm btn-outline-dark">Borrar</a>
+
+                                        </div>
+
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+            if (item.Tipo == "Prestamo")
+            {
+                foreach (PrestamoViewModel cuenta in ViewBag.Prestamos)
+                {
+                    @if (item.Numero9Digitos == cuenta.NumeroProducto)
+                    {
+                        <div class="col-4 mb-3">
+                            <div class="card shadow-sm">
+
+
+
+                                <div class="card-body">
+                                    @if (item.Tipo == "Prestamo")
+                                    {
+                                        <p class="card-text"><strong>Tipo Producto: </strong> @item.Tipo</p>
+                                    }
+                                    <p class="card-text"><strong>Monto del Prestamo: </strong> @cuenta.Monto</p>
+                                    <p class="card-text"><strong>Deuda Del Prestamo: </strong> @cuenta.Deuda</p>
+                                    <p class="card-text"><strong>Numero Del Prestamo: </strong> @cuenta.NumeroPrestamo</p>
+
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a asp-controller="Prestamo" asp-action="Delete" asp-route-id="@cuenta.IdPrestamo" class="btn btn-sm btn-outline-dark">Borrar</a>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+
+            if (item.Tipo == "TarjetaCredito")
+            {
+                foreach (TarjetaCreditoViewModel tarjeta in ViewBag.Tarjetas)
+                {
+                    @if (item.Numero9Digitos == tarjeta.NumeroProducto)
+                    {
+                        <div class="col-4 mb-3">
+                            <div class="card shadow-sm">
+
+
+
+                                <div class="card-body">
+                                    @if (item.Tipo == "TarjetaCredito")
+                                    {
+                                        <p class="card-text"><strong>Tipo Producto: </strong> @item.Tipo</p>
+                                    }
+                                    <p class="card-text"><strong>Monto Limite: </strong> @tarjeta.LimiteCredito</p>
+                                    <p class="card-text"><strong>Deuda De la Tarjeta: </strong> @tarjeta.Deuda</p>
+                                    <p class="card-text"><strong>Numero De la Tarjeta: </strong> @tarjeta.NumeroTarjeta</p>
+
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group">
+                                            <a asp-controller="TarjetaCredito" asp-action="Delete" asp-route-id="@tarjeta.IdTarjetaCredito" class="btn btn-sm btn-outline-dark">Borrar</a>
+
+                                        </div>
+
+                                    </div>
+                                
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+             }
+        }
+    </div>
+
+</div>
+<hr />

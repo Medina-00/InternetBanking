@@ -1,0 +1,50 @@
+﻿@model InternetBanking.Core.Application.ViewModels.AvanceEfectivo.SaveAvanceEfectivoViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SaveAvanceEfectivoViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Monto" class="control-label"></label>
+                <input required asp-for="Monto" class="form-control" />
+                <span asp-validation-for="Monto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                
+                <input asp-for="Interes" type="hidden" />
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCuentaAhorro" class="control-label"></label>
+                <select required asp-for="IdCuentaAhorro" asp-items="@(new SelectList(Model.CuentaAhorro,"IdCuentaAhorro","NumeroCuenta"))" class="form-select">
+                    <option value="">Seleccione una Cuenta</option>
+                </select>
+
+                <span asp-validation-for="IdCuentaAhorro" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdTarjetaCredito" class="control-label"></label>
+                <select required asp-for="IdTarjetaCredito" asp-items="@(new SelectList(Model.TarjetaCredito,"IdTarjetaCredito","NumeroTarjeta"))" class="form-select">
+                    <option value="">Seleccione una Tarjeta de credito</option>
+                </select>
+
+                <span asp-validation-for="IdTarjetaCredito" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-controller="Producto" asp-action="Index">Back to List</a>
+</div>
+

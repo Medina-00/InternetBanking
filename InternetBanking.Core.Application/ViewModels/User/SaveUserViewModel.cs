@@ -35,6 +35,10 @@ namespace InternetBanking.Core.Application.ViewModels.User
         [Required(ErrorMessage = "Debe colocar un Rol")]
         [DataType(DataType.Password)]
         public string Rol { get; set; }
+
+        public double? MontoInicial { get; set; }
+
+        public bool? Activo { get; set; }
         public bool HasError { get; set; }
         public string? Error { get; set; }
 

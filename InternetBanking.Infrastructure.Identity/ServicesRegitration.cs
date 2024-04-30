@@ -28,6 +28,8 @@ namespace InternetBanking.Infrastructure.Identity
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/User/Login";
+                options.AccessDeniedPath = "/User/AccessDenied";
+
             });
 
             #region Identity

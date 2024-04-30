@@ -1,8 +1,71 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model InternetBanking.Core.Application.ViewModels.Home.DashboardViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@{
+    ViewData["Title"] = "Home";
+
+}
+<div class="container p-3">
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-center-dark"> Dashboard(Home) </h2>
+        </div>
+        
+
+    </div>
+</div>
+<hr />
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Transacciones totales - </h5>
+                <div class="card-body text-center"><i class="bi bi-send-check-fill"></i><strong> # @Model.TransaccionesTotal </strong></div>
+                
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Transacciones del dia -</h5>
+                <div class="card-body text-center"><i class="bi bi-send-check"></i><strong> # @Model.TransaccionesDia </strong></div>
+                
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Pagos Totales -</h5>
+                <div class="card-body text-center"><i class="bi bi-wallet2"></i><strong> # @Model.PagosTotal </strong></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Pagos Del Dia -</h5>
+                <div class="card-body text-center"><i class="bi bi-wallet2"></i><strong> # @Model.PagosDia </strong></div>
+                
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Usuarios Activos -</h5>
+                <div class="card-body text-center"><i class="bi bi-person-check-fill"></i><strong> # @Model.UsuarioActivo </strong> </div>
+                
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Usuarios Inictivos -</h5>
+                <div class="card-body text-center"><i class="bi bi-person-dash-fill"></i> <strong> # @Model.UsuarioInactivo </strong> </div>
+               
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card bg-dark text-white">
+                <h5 class="card-title text-center">- Productos Totales asignados -</h5>
+                <div class="card-body text-center"><i class="bi bi-people"></i><strong> #@Model.Productos </strong></div>
+                
+            </div>
+        </div>
+    </div>
 </div>

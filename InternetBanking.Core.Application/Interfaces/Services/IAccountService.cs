@@ -1,5 +1,6 @@
 ﻿using InternetBanking.Core.Application.Dtos.Account.Request;
 using InternetBanking.Core.Application.Dtos.Account.Response;
+using InternetBanking.Core.Application.ViewModels.User;
 
 namespace InternetBanking.Core.Application.Interfaces.Services
 {
@@ -7,9 +8,13 @@ namespace InternetBanking.Core.Application.Interfaces.Services
     {
         Task<AuthenticationResponse> AuthenticateAsync(AuthenticationRequest request);
         Task<UpdateResponse> EditUserAsync(string userName, UpdateRequest request);
-        Task<UpdateResponse> GetByUserName(string Username);
+        Task<UpdateUserViewModel> GetByUserName(string Username);
         Task LogOut();
         Task<RegisterResponse> RegisterUserAsync(RegisterRequest request);
         Task SignOutAsync();
+
+        Task<IEnumerable<UserViewModel>> GetAllUser();
+
+        Task Activar(string UserId, ActivarUser activarUser);
     }
 }

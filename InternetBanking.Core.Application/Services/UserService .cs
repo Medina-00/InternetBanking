@@ -18,8 +18,17 @@ namespace InternetBanking.Core.Application.Services
             this.accountService = accountService;
         }
 
+        public async Task Activar(string UserId, ActivarUser activarUser)
+        {
+            await accountService.Activar(UserId, activarUser);  
+        }
 
-        public async Task<UpdateResponse> GetByUserName(string UserName)
+        public async Task<IEnumerable<UserViewModel>> GetAllUser()
+        {
+            return await accountService.GetAllUser();
+        }
+
+        public async Task<UpdateUserViewModel> GetByUserId(string UserName)
         {
             return await accountService.GetByUserName(UserName);
         }
